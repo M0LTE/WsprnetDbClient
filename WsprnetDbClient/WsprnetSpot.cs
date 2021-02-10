@@ -27,5 +27,7 @@ namespace WsprnetDbClientLib
         public string ReporterLocator { get; set; }
         public int Km { get; set; }
         public string Mode { get; set; }
+
+        public override int GetHashCode() => Timestamp.GetHashCode() ^ Call.GetHashCode() ^ ReporterCallsign.GetHashCode() ^ Frequency.GetHashCode();
     }
 }
