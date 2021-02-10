@@ -29,5 +29,10 @@ namespace WsprnetDbClientLib
         public string Mode { get; set; }
 
         public override int GetHashCode() => Timestamp.GetHashCode() ^ Call.GetHashCode() ^ ReporterCallsign.GetHashCode() ^ Frequency.GetHashCode();
+
+        public override string ToString()
+        {
+            return $"{Timestamp:yyyy-MM-dd HH:mm} {Call}->{ReporterCallsign} @ {Frequency}";
+        }
     }
 }
