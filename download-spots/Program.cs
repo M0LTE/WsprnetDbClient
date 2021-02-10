@@ -10,7 +10,7 @@ namespace download_spots
         {
             var client = new WsprnetDbClient();
 
-            var spots = await client.GetSpots(WsprnetBand.All);
+            var spots = await client.GetSpots(WsprnetBand.All, WsprnetSortOrder.Date);
 
             foreach (var spot in spots)
             {

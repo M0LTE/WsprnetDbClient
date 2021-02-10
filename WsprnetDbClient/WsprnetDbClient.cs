@@ -9,10 +9,23 @@ namespace WsprnetDbClientLib
 {
     public class WsprnetDbClient
     {
-        public async Task<WsprnetSpot[]> GetSpots(WsprnetBand band, int numberOfSpots = 10000, string searchForCall = null, string showSpotsHeardBy = null, bool findUniqueCalls = false, bool findUniqueReporters = false)
+        private readonly string userAgent;
+
+        public WsprnetDbClient(string userAgent = null)
         {
-            var url = $"http://wsprnet.org/olddb?mode=html&band={band}&limit={Math.Min(10000, numberOfSpots)}&findcall={searchForCall}&findreporter={showSpotsHeardBy}{(findUniqueCalls ? "&unique=on" : "")}{(findUniqueReporters ? "&uniquereporters=on" : "")}";
+            this.userAgent = userAgent;
+        }
+
+        public async Task<WsprnetSpot[]> GetSpots(WsprnetBand band, WsprnetSortOrder sort, int numberOfSpots = 10000, string searchForCall = null, string showSpotsHeardBy = null, bool findUniqueCalls = false, bool findUniqueReporters = false)
+        {
+            var url = $"http://wsprnet.org/olddb?mode=html&band={band}&limit={Math.Min(10000, numberOfSpots)}&findcall={searchForCall}&findreporter={showSpotsHeardBy}{(findUniqueCalls ? "&unique=on" : "")}{(findUniqueReporters ? "&uniquereporters=on" : "")}&sort={sort}";
             var htmlWeb = new HtmlWeb();
+            
+            if (!string.IsNullOrWhiteSpace(userAgent))
+            {
+                htmlWeb.UserAgent = userAgent;
+            }
+
             var doc = await htmlWeb.LoadFromWebAsync(url);
 
             var rows = doc.DocumentNode.SelectNodes("/body[1]/table[3]/tr").Skip(2);
